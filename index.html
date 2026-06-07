@@ -153,7 +153,7 @@
       /* --- DUAL ROW GRID WITH PLAYLIST & PLAYER --- */
       .music-grid {
         display: grid;
-        grid-template-columns: 1.2fr 1.8fr;
+        grid-template-columns: 1.25fr 1.75fr;
         gap: 3.5rem;
         flex-grow: 1;
         align-items: start;
@@ -189,7 +189,7 @@
       .playlist-items {
         display: flex;
         flex-direction: column;
-        gap: 0.35rem;
+        gap: 0.5rem;
         max-height: 520px;
         overflow-y: auto;
         padding-right: 0.5rem;
@@ -210,11 +210,12 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 1rem 1.25rem;
+        padding: 0.85rem 1rem;
         background-color: var(--surface-color);
         border: 1px solid transparent;
         transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         cursor: pointer;
+        gap: 0.75rem;
       }
 
       .playlist-item:hover {
@@ -230,7 +231,9 @@
       .track-info-left {
         display: flex;
         align-items: center;
-        gap: 1.25rem;
+        gap: 0.75rem;
+        flex-grow: 1;
+        min-width: 0; /* Ensures correct text truncation if needed */
       }
 
       .track-index {
@@ -240,14 +243,33 @@
         color: var(--gold-color);
         opacity: 0.7;
         width: 18px;
+        flex-shrink: 0;
+      }
+
+      .row-play-indicator {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 0.25rem;
+        color: var(--text-muted);
+        flex-shrink: 0;
+        transition: color 0.3s ease;
+      }
+
+      .playlist-item:hover .row-play-indicator,
+      .playlist-item.active .row-play-indicator {
+        color: var(--gold-color);
       }
 
       .track-title-text {
         font-family: var(--font-serif);
-        font-size: 1.15rem;
+        font-size: 1.1rem;
         letter-spacing: 0.02em;
         color: var(--text-color);
         transition: color 0.3s ease;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
 
       .playlist-item.active .track-title-text {
@@ -262,6 +284,8 @@
         gap: 2px;
         width: 14px;
         height: 14px;
+        margin-left: 0.5rem;
+        flex-shrink: 0;
       }
 
       .mini-bar {
@@ -286,6 +310,32 @@
       @keyframes bounce {
         0% { height: 3px; }
         100% { height: 14px; }
+      }
+
+      .track-actions-right {
+        display: flex;
+        align-items: center;
+        flex-shrink: 0;
+      }
+
+      .playlist-download-btn {
+        background-color: transparent;
+        border: 1px solid var(--border-color);
+        color: var(--gold-color);
+        font-family: var(--font-sans);
+        font-size: 0.75rem;
+        letter-spacing: 0.05em;
+        padding: 0.45rem 0.9rem;
+        cursor: pointer;
+        transition: all 0.25s ease;
+        border-radius: 4px;
+        white-space: nowrap;
+      }
+
+      .playlist-download-btn:hover {
+        background-color: var(--gold-color);
+        color: #000;
+        border-color: var(--gold-color);
       }
 
       /* --- PLAYER CONTROL BOARD --- */
@@ -593,113 +643,55 @@
         width: 80%;
       }
 
-      /* Luxury Ownership button triggers licensing modal */
-      .ownership-trigger-btn {
-        background-color: transparent;
+      /* --- COMPLETE COLLECTION ZIP SECTION --- */
+      .complete-collection-section {
+        background-color: var(--surface-color);
         border: 1px solid var(--border-color);
+        padding: 2.25rem;
+        text-align: center;
+        transition: all 0.3s ease;
+        margin-top: 2rem;
+      }
+
+      .complete-collection-section .section-title {
+        font-family: var(--font-serif);
+        font-size: 1.5rem;
+        color: var(--gold-color);
+        letter-spacing: 0.1em;
+        margin-bottom: 0.5rem;
+      }
+
+      .complete-collection-section .section-desc {
+        font-family: var(--font-sans);
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        margin-bottom: 1.5rem;
+        letter-spacing: 0.05em;
+        line-height: 1.5;
+      }
+
+      .zip-download-btn {
+        background-color: transparent;
+        border: 1px solid var(--gold-color);
         color: var(--gold-color);
         font-family: var(--font-serif);
         font-size: 0.95rem;
         letter-spacing: 0.12em;
         text-transform: uppercase;
-        padding: 1.15rem 1.75rem;
+        padding: 1.15rem 2rem;
         cursor: pointer;
         transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-        text-align: center;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
         width: 100%;
-        font-weight: 400;
       }
 
-      .ownership-trigger-btn:hover {
+      .zip-download-btn:hover {
         background-color: var(--gold-color);
         color: #000;
-        border-color: var(--gold-color);
-        font-weight: 500;
         box-shadow: 0 4px 15px rgba(212, 175, 55, 0.2);
-      }
-
-      /* --- EXPENSIVE MODAL DIALOG --- */
-      .modal-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(11, 11, 11, 0.92);
-        backdrop-filter: blur(8px);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 200;
-        opacity: 0;
-        pointer-events: none;
-        transition: opacity 0.4s ease;
-      }
-
-      .modal-overlay.active {
-        opacity: 1;
-        pointer-events: auto;
-      }
-
-      .modal-box {
-        background-color: var(--surface-color);
-        border: 1px solid var(--border-color-active);
-        padding: 3.5rem 3rem;
-        max-width: 540px;
-        width: 90%;
-        text-align: center;
-        transform: scale(0.95) translateY(10px);
-        transition: transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
-        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
-      }
-
-      .modal-overlay.active .modal-box {
-        transform: scale(1) translateY(0);
-      }
-
-      .modal-ornament {
-        font-family: var(--font-serif);
-        font-size: 1.75rem;
-        color: var(--gold-color);
-        margin-bottom: 1.5rem;
-        letter-spacing: 0.25em;
-      }
-
-      .modal-title {
-        font-family: var(--font-serif);
-        font-size: 1.85rem;
-        font-weight: 300;
-        letter-spacing: 0.05em;
-        color: var(--text-color);
-        margin-bottom: 1.5rem;
-      }
-
-      .modal-text {
-        font-family: var(--font-sans);
-        font-size: 0.95rem;
-        line-height: 1.8;
-        color: #e0e0e0;
-        margin-bottom: 2.25rem;
-        font-weight: 300;
-        white-space: pre-line; /* Essential for text formatting layout */
-      }
-
-      .modal-close-btn {
-        background-color: transparent;
-        border: 1px solid rgba(255, 255, 255, 0.15);
-        color: var(--text-color);
-        font-family: var(--font-sans);
-        font-size: 0.75rem;
-        letter-spacing: 0.2em;
-        text-transform: uppercase;
-        padding: 0.75rem 2rem;
-        cursor: pointer;
-        transition: all 0.3s ease;
-      }
-
-      .modal-close-btn:hover {
-        border-color: var(--gold-color);
-        color: var(--gold-color);
       }
 
       /* --- FOOTER STATEMENT --- */
@@ -778,6 +770,23 @@
 
         .current-title {
           font-size: 1.45rem;
+        }
+
+        .playlist-header {
+          font-size: 1.25rem;
+        }
+
+        .playlist-item {
+          padding: 0.85rem;
+        }
+
+        .track-title-text {
+          font-size: 0.95rem;
+        }
+
+        .playlist-download-btn {
+          font-size: 0.7rem;
+          padding: 0.35rem 0.6rem;
         }
 
         .player-panel {
@@ -938,8 +947,19 @@
             </div>
           </div>
 
-          <!-- Licensing and acquire rights trigger button -->
-          <button class="ownership-trigger-btn" id="ownershipBtn">Ownership Request</button>
+          <!-- COMPLETE COLLECTION ZIP SECTION -->
+          <div class="complete-collection-section" id="completeCollectionSection">
+            <h3 class="section-title">Complete Collection</h3>
+            <p class="section-desc">Download all master files compiled collectively in high-fidelity archive format.</p>
+            <button class="zip-download-btn" id="zipDownloadBtn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+              Download Complete Wedding Collection
+            </button>
+          </div>
           
         </section>
       </main>
@@ -953,20 +973,11 @@
       </footer>
     </div>
 
-    <!-- OWNERSHIP INFO DIALOG MODAL -->
-    <div class="modal-overlay" id="modalOverlay">
-      <div class="modal-box">
-        <div class="modal-ornament">⚜</div>
-        <h3 class="modal-title">Ownership Protection Notice</h3>
-        <p class="modal-text" id="modalTextContent">Downloads are intentionally unavailable from this listening experience.
-
-Master files, ownership rights and delivery access become available after purchase confirmation and agreement of the sale.</p>
-        <button class="modal-close-btn" id="modalCloseBtn">Acknowledge</button>
-      </div>
-    </div>
-
     <!-- PLAYLIST COMPOSITION DATA AND RUNTIME INTERACTIVE PLAYER CONTROLS JS -->
     <script>
+      // ZIP file variable parameter as requested
+      const zipFile = "REPLACE_WITH_ZIP_URL";
+
       // Required Collection Array exactly matching tracks specified
       const tracks = [
         {
@@ -1054,9 +1065,8 @@ Master files, ownership rights and delivery access become available after purcha
       const volumeSlider = document.getElementById('volumeSlider');
       const volumeProgress = document.getElementById('volumeProgress');
 
-      const ownershipBtn = document.getElementById('ownershipBtn');
-      const modalOverlay = document.getElementById('modalOverlay');
-      const modalCloseBtn = document.getElementById('modalCloseBtn');
+      const completeCollectionSection = document.getElementById('completeCollectionSection');
+      const zipDownloadBtn = document.getElementById('zipDownloadBtn');
 
       /* --- CORE DESIRED PROTECTION LAYER --- */
       // Prevent Right Context Menu Click
@@ -1069,26 +1079,6 @@ Master files, ownership rights and delivery access become available after purcha
         e.preventDefault();
       });
 
-      // Strict Keyboard Shortcut Guard
-      document.addEventListener('keydown', function(e) {
-        // Prevent Save Shortcuts (Ctrl+S, CMD+S)
-        if ((e.ctrlKey || e.metaKey) && (e.key === 's' || e.key === 'S')) {
-          e.preventDefault();
-        }
-        // Prevent View Source Shortcuts (Ctrl+U, CMD+U)
-        if ((e.ctrlKey || e.metaKey) && (e.key === 'u' || e.key === 'U')) {
-          e.preventDefault();
-        }
-        // Prevent F12 Opening Inspector
-        if (e.key === 'F12') {
-          e.preventDefault();
-        }
-        // Prevent Web inspector tools (Ctrl+Shift+I / CMD+Option+I / Ctrl+Shift+J)
-        if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j')) {
-          e.preventDefault();
-        }
-      });
-
       /* --- CORE LOGICAL FLOW --- */
       // Format numeric duration seconds elegantly
       function formatTime(seconds) {
@@ -1096,6 +1086,36 @@ Master files, ownership rights and delivery access become available after purcha
         const mins = Math.floor(seconds / 60);
         const secs = Math.floor(seconds % 60);
         return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+      }
+
+      // Handle the MP3 music file download with new tab fallback on CORS restriction
+      function triggerDownload(e, index) {
+        e.stopPropagation(); // Restrict row play triggering when clicking download column directly
+
+        const track = tracks[index];
+        const filename = `${track.title}.mp3`;
+        
+        // Attempt clean direct XMLHttp/fetch blob downloading to bypass cross-origin browser media playback locks
+        fetch(track.src)
+          .then(response => {
+            if (!response.ok) throw new Error('Source download response failed');
+            return response.blob();
+          })
+          .then(blob => {
+            const blobUrl = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = blobUrl;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(blobUrl);
+          })
+          .catch(err => {
+            console.warn("Direct download link triggered new tab delivery access:", err);
+            // Dynamic premium browser fallback: automatic redirect file to external high-speed new tab delivery frame
+            window.open(track.src, '_blank');
+          });
       }
 
       // Populate interactive elements
@@ -1115,12 +1135,20 @@ Master files, ownership rights and delivery access become available after purcha
           item.innerHTML = `
             <div class="track-info-left">
               <span class="track-index">${displayIndex}</span>
+              <span class="row-play-indicator">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                  <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                </svg>
+              </span>
               <span class="track-title-text">${track.title}</span>
+              <div class="track-indicator">
+                <div class="mini-bar bar-1"></div>
+                <div class="mini-bar bar-2"></div>
+                <div class="mini-bar bar-3"></div>
+              </div>
             </div>
-            <div class="track-indicator">
-              <div class="mini-bar bar-1"></div>
-              <div class="mini-bar bar-2"></div>
-              <div class="mini-bar bar-3"></div>
+            <div class="track-actions-right">
+              <button class="playlist-download-btn" onclick="triggerDownload(event, ${index})">Download MP3</button>
             </div>
           `;
 
@@ -1309,31 +1337,32 @@ Master files, ownership rights and delivery access become available after purcha
         }
       });
 
+      // Complete Collection premium section rendering
+      function checkZipSection() {
+        if (!zipFile || zipFile === "REPLACE_WITH_ZIP_URL" || zipFile.trim() === "") {
+          completeCollectionSection.style.display = 'none';
+        } else {
+          completeCollectionSection.style.display = 'block';
+        }
+      }
+
+      zipDownloadBtn.addEventListener('click', () => {
+        if (zipFile && zipFile !== "REPLACE_WITH_ZIP_URL" && zipFile.trim() !== "") {
+          window.open(zipFile, '_blank');
+        }
+      });
+
       // Control tray clicks bindings
       playPauseBtn.addEventListener('click', togglePlayPause);
       prevBtn.addEventListener('click', prevTrack);
       nextBtn.addEventListener('click', nextTrack);
-
-      // Modal Dialog visibility triggers
-      ownershipBtn.addEventListener('click', () => {
-        modalOverlay.classList.add('active');
-      });
-
-      modalCloseBtn.addEventListener('click', () => {
-        modalOverlay.classList.remove('active');
-      });
-
-      modalOverlay.addEventListener('click', (e) => {
-        if (e.target === modalOverlay) {
-          modalOverlay.classList.remove('active');
-        }
-      });
 
       // Pre-initialize and render first track
       window.addEventListener('DOMContentLoaded', () => {
         loadTrack(0);
         // Set standard startup sound parameters
         setVolume(80);
+        checkZipSection();
       });
     </script>
   </body>
